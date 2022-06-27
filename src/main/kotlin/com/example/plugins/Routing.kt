@@ -58,5 +58,10 @@ fun Application.configureRouting() {
         static("/static") {
             resources("static")
         }
+
+        get("/users/{userId}") {
+            val userId = call.parameters["userId"]
+            call.respondText("Hello $userId");
+        }
     }
 }
