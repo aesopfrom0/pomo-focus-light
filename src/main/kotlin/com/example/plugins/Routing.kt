@@ -7,6 +7,7 @@ import io.ktor.server.application.*
 import io.ktor.server.response.*
 import io.ktor.server.request.*
 import kotlinx.serialization.Serializable
+import org.jetbrains.exposed.sql.transactions.transaction
 
 @Serializable
 data class User(
@@ -21,6 +22,27 @@ fun Application.configureRouting() {
         get("/") {
             call.respondText("Hello AESOP!")
         }
+
+        get("readiness") {
+            val connRes: MutableMap<String, Boolean> = mutableMapOf()
+
+            connRes["conn_pomo_focus_db"] = transaction(com.example.plugins.DBProviders.db) {
+                try {
+                    !connection.isClosed
+                } catch (e: Exception) {
+                    System.err.println("while connecting to main db ->")
+                    System.err.println(e)
+                    false
+                }
+            }
+
+            if (connRes.all { (_, value) -> value }) {
+                call.respond(HttpStatusCode.OK, connRes)
+            } else {
+                call.respond(HttpStatusCode.InternalServerError, connRes)
+            }
+        }
+
         post("/users") {
             val user = call.receive<User>()
             println(user)
