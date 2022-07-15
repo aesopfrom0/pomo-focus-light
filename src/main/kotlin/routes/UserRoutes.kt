@@ -16,7 +16,7 @@ fun Route.userRouting() {
             val user = call.receive<User>()
             logger.info(user.toString())
             val userService = UserService()
-            val result = userService.createUser()
+            val result = userService.createUser(user)
 
             call.respond(HttpStatusCode.Created, result)
         }
