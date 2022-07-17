@@ -1,10 +1,9 @@
 package tables
 
+import org.jetbrains.exposed.dao.id.IntIdTable
 import org.jetbrains.exposed.sql.Column
-import org.jetbrains.exposed.sql.Table
 
-object UsersTable: Table() {
-    val id: Column<Int> = integer("id").autoIncrement()
+object UsersTable: IntIdTable(name = "users") {
     val lastName: Column<String> = varchar("last_name", 64)
     val firstName: Column<String> = varchar("first_name", 64)
     val email: Column<String> = varchar("email", 64)

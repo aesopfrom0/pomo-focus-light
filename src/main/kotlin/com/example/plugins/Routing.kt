@@ -7,11 +7,13 @@ import io.ktor.server.application.*
 import io.ktor.server.response.*
 import io.ktor.server.request.*
 import org.jetbrains.exposed.sql.transactions.transaction
+import routes.taskRouting
 import routes.userRouting
 
 fun Application.configureRouting() {
     routing {
         userRouting()
+        taskRouting()
     }
 
     routing {
