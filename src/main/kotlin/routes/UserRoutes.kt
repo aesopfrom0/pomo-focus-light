@@ -11,11 +11,11 @@ import org.slf4j.LoggerFactory
 
 fun Route.userRouting() {
     val logger = LoggerFactory.getLogger("Route.userRouting")
+    val userService = UserService()
     route("/users") {
         post {
             val user = call.receive<User>()
             logger.info(user.toString())
-            val userService = UserService()
             val result = userService.createUser(user)
 
             call.respond(HttpStatusCode.Created, result)
